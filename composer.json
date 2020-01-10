@@ -1,9 +1,10 @@
 {
-    "name": "asperhsu/faker-placeholder-provider",
-    "description": "placeholder provider for Faker",
+    "name": "asperhsu/faker-imageurl-provider",
+    "description": "imageurl provider for Faker",
     "keywords": [
         "faker",
         "placeholder",
+        "fakeimg.pl",
         "provider"
     ],
     "license": "MIT",

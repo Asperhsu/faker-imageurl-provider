@@ -4,12 +4,17 @@ namespace Asper\Faker;
 
 use Faker\Provider\Base as Provider;
 
-class PlaceholderProvider extends Provider
+class FakeImgProvider extends Provider
 {
-    public static function imageUrl($width = 640, int $height = null, string $background = null, string $color = null, string $text = null, string $extension = null)
+    const FONT_LOBSTER = 'lobster';
+    const FONT_BEBAS = 'bebas';
+    const FONT_MUSEO = 'museo';
+    const FONT_NOTO = 'noto';
+
+    public static function imageUrl($width = 640, int $height = null, string $background = null, string $color = null, string $text = null, bool $retina = false, string $font = null)
     {
-        $baseUrl = 'https://via.placeholder.com/';
-        $pattern = '{filename}/{background}/{color}';
+        $baseUrl = 'https://fakeimg.pl/';
+        $pattern = '{size}/{background}/{color}';
         $params = [];
         $query = [];
 
@@ -17,19 +22,17 @@ class PlaceholderProvider extends Provider
             extract($width);
         }
 
-        // size and extension
-        $params['filename'] = (!$height || $width === $height) ? $width : "${width}x${height}";
-        if ($extension) {
-            $params['filename'] .= '.' . $extension;
-        }
+        // size
+        $params['size'] = (!$height || $width === $height) ? $width : "${width}x${height}";
 
         // color
         $params['background'] = $color ? (strtoupper($background) ?: '_') : strtoupper($background);
         $params['color'] = strtoupper($color);
 
-        if ($text) {
-            $query['text'] = $text;
-        }
+        // query
+        $text && ($query['text'] = $text);
+        (bool) $retina && ($query['retina'] = 1);
+        $font && ($query['font'] = $font);
 
         $path = $pattern;
         foreach ($params as $key => $value) {
